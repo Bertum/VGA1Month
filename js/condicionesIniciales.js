@@ -38,32 +38,6 @@ naveEnemiga.addEventListener('load', function () {
 naveEnemiga.src = "img/Example_ships/8B.png";
 naveEnemiga2.src = "img/Example_ships/8.png";
 
-//Declaracion objeto Ship para el jugador y los enemigos
-function Ship(src, posX, posY, vida) {
-	this.sprite = src;
-	this.posX = posX;
-	this.posY = posY;
-	this.vida = vida;
-	this.altura = this.sprite.height;
-	this.anchura = this.sprite.width;
-	this.damageTaken = 0;
-	this.balas = new Array();
-	this.movX = 0;
-	this.movY = 0;
-	this.velocX = 0;
-	this.velocY = 0;
-}
-
-//Declaracion objeto Municion
-function Municion(src, munX, munY, damage, munV) {
-	this.sprite = new Image();
-	this.sprite.src = src;
-	this.munX = munX;
-	this.munY = munY;
-	this.munV = munV;
-	this.damage = damage;
-}
-
 //Obtiene un sprite aleatorio para los enemigos
 function GetRandomEnemySprite() {
 	var image = new Image();
