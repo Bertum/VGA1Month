@@ -265,7 +265,7 @@ function spawnPowerup() {
 				break;
 		}
 		nPowerups = 1;
-		powerup.push(new Powerup(image, /*randomRangeNumber(1, 2) * widthVentana*/500, Math.random() * heightVentana, efecto, 100));
+		powerup.push(new Powerup(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, efecto, 100));
 	}
 }
 
@@ -316,7 +316,7 @@ function gestionJefe() {
 		else { jefe.posX = widthVentana / 2; }
 		jefe.posY += Math.random() * 4 - 2;
 		gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
-		if (controlTiempo % 100 == 0) { colisionJefe(); }
+		//if (controlTiempo % 100 == 0) { colisionJefe(); }
 	}
 }
 
@@ -421,7 +421,7 @@ function activarPowerup(efecto) {
 	switch (efecto) {
 		case 1:
 			pj.balas.damage = 20;
-			pj.balas.sprite.src = "img/Muzzle_flashes/misil.png";
+			pj.balas.sprite = "img/Muzzle_flashes/misil.png";
 			break;
 		case 2:
 

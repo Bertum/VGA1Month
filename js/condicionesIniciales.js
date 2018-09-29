@@ -83,6 +83,8 @@ function GetRandomEnemySprite() {
 
 var nPowerups = 0;
 var powerup = new Array();
+var tiempoefecto = 0;
+var activo = 0;
 
 var misilesimg = new Image();
 var escudoimg = new Image();
