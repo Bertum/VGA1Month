@@ -236,6 +236,12 @@ function enemigoDispara(numEnemigo) {
 		enemigos[numEnemigo].posY + (enemigos[numEnemigo].posY / 2), 5, 3));
 }
 
+function gestionJefe(){
+	if (jefe.posX > widthVentana/2){jefe.posX--;}
+	else{jefe.posX = widthVentana/2;}
+	jefe.posY += Math.random() * 4 - 2;
+}
+
 //Funcion de la gestion de las zonas tactiles
 function gestionZonas() {
 	//Movimientos

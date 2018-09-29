@@ -46,6 +46,15 @@ naveEnemiga.addEventListener('load', function () {
 naveEnemiga.src = "img/Example_ships/8B.png";
 naveEnemiga2.src = "img/Example_ships/8.png";
 
+var naveJefe = new Image();
+var jefe = 0;
+
+naveJefe.addEventListener('load', function () {
+	//Variables jefe
+	jefe = new Ship(naveJefe, 100 + widthVentana, 100, 100);
+}, false);
+naveJefe.src = "img/Example_ships/Alien-Mothership2.png";
+
 //Obtiene un sprite aleatorio para los enemigos
 function GetRandomEnemySprite() {
 	var image = new Image();

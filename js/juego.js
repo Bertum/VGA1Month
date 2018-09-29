@@ -30,6 +30,7 @@ function bucle() {
 	limpiaBalas();
 	movimientoPJ();
 	movimientoEnemigo();
+	gestionJefe();
 	updateHPBar();
 	finDelJuego();
 	controlTiempo++;
