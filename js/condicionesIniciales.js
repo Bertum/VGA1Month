@@ -12,6 +12,8 @@ var ammoContext = ammoCanvas.getContext("2d"); //indico que el juego será 2D
 var widthVentana = window.innerWidth;
 var heightVentana = window.innerHeight;
 var level = 1;
+var speed = 6;
+var gamePaused = false;;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;
@@ -22,12 +24,17 @@ for (var i = 0; i < nEstrellas; i++) {
 }
 
 var meteoriteImage = new Image();
+var trophyImage = new Image();
 meteoriteImage.src = "img/meteorites/meteorite.png";
+trophyImage.src = "img/trophy.png";
+var trophy = 0;
 
 var navePJ = new Image();
 var pj = 0;
 navePJ.addEventListener('load', function () {
 	pj = new Ship(navePJ, 100, 100, 20);
+	//Crea el trofeo para acabar el nivel
+	trophy = new Trophy(trophyImage, 10000, window.innerHeight / 2);
 }, false);
 navePJ.src = "img/Example_ships/13.png";
 
