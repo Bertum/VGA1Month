@@ -212,7 +212,7 @@ function movimientoEnemigo() {
 			break;
 		}
 		//Si el enemigo se sale de la pantalla, lo borramos directamente
-		if (enemigos[e].posX < 20 || enemigos[e].posX > widthVentana - enemigos[e].anchura || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
+		if (enemigos[e].posX < 20 /*|| enemigos[e].posX > widthVentana - enemigos[e].anchura*/ || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
 			enemigos.splice(e, 1);
 			break;
 		}
@@ -224,7 +224,8 @@ function movimientoEnemigo() {
 
 //Funcion para la creacion de nuevos enemigos tras un tiempo de juego
 function spawnEnemy() {
-	enemigos.push(new Ship(naveEnemiga, Math.random() * widthVentana, Math.random() * heightVentana, 5));
+	var image = GetRandomEnemySprite();
+	enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));
 }
 
 //Funcion para hacer que un enemigo aleatorio dispare

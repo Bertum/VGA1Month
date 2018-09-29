@@ -20,7 +20,9 @@ function bucle() {
 	}
 	if (controlTiempo % 50 == 0) {
 		spawnEnemy();
-		enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
+		if (level == 2) {
+			enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
+		}
 	}
 	if (controlTiempo % 5000 == 0) {
 		borraSonidos();
@@ -38,9 +40,9 @@ function bucle() {
 
 function finDelJuego() {
 	if (pj.damageTaken >= pj.vida) {
-		alert("GAME OVER \nTOTAL SCORE = " + puntuacion);
+		//alert("GAME OVER \nTOTAL SCORE = " + puntuacion);
 		//Reiniciamos la pagina
-		clearTimeout(temporizador);
-		location.reload(true);
+		//clearTimeout(temporizador);
+		//location.reload(true);
 	}
 }

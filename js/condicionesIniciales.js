@@ -11,6 +11,7 @@ var ammoContext = ammoCanvas.getContext("2d"); //indico que el juego será 2D
 //Anchura y altura de ventana
 var widthVentana = window.innerWidth;
 var heightVentana = window.innerHeight;
+var level = 1;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;
@@ -19,6 +20,9 @@ for (var i = 0; i < nEstrellas; i++) {
 	arrEstrellas[i] = new Image();
 	arrEstrellas[i].src = "img/Stars-Nebulae/Stars.png";
 }
+
+var meteoriteImage = new Image();
+meteoriteImage.src = "img/meteorites/meteorite.png";
 
 var navePJ = new Image();
 var pj = 0;
@@ -36,7 +40,7 @@ naveEnemiga.addEventListener('load', function () {
 	//Variables enemigos
 	for (var i = 0; i < nEnemigos; i++) {
 		var image = GetRandomEnemySprite();
-		enemigos.push(new Ship(image, Math.random() * widthVentana, Math.random() * heightVentana, 5));
+		enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));
 	}
 }, false);
 naveEnemiga.src = "img/Example_ships/8B.png";
@@ -45,12 +49,16 @@ naveEnemiga2.src = "img/Example_ships/8.png";
 //Obtiene un sprite aleatorio para los enemigos
 function GetRandomEnemySprite() {
 	var image = new Image();
-	var rnd = randomRangeNumber(0, 1);
-	switch (rnd) {
-		case 0: image = naveEnemiga;
-			break;
-		case 1: image = naveEnemiga2;
-			break;
+	if (level == 2) {
+		var rnd = randomRangeNumber(0, 1);
+		switch (rnd) {
+			case 0: image = naveEnemiga;
+				break;
+			case 1: image = naveEnemiga2;
+				break;
+		}
+	} else {
+		image = meteoriteImage;
 	}
 	return image;
 }
