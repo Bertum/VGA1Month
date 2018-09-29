@@ -26,10 +26,12 @@ meteoriteImage.src = "img/meteorites/meteorite.png";
 
 var navePJ = new Image();
 var pj = 0;
+navePJ.src = "img/futuramaShip_smaller.png";
 navePJ.addEventListener('load', function () {
 	pj = new Ship(navePJ, 100, 100, 20);
 }, false);
 navePJ.src = "img/Example_ships/13.png";
+
 
 var nEnemigos = 3;
 var enemigos = new Array();
@@ -43,8 +45,8 @@ naveEnemiga.addEventListener('load', function () {
 		enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));
 	}
 }, false);
-naveEnemiga.src = "img/Example_ships/8B.png";
-naveEnemiga2.src = "img/Example_ships/8.png";
+naveEnemiga.src = "img/small_enemyShip.png";
+naveEnemiga2.src = "img/Small_enemyShip_2/8.png";
 
 var naveJefe = new Image();
 var jefe = 0;
@@ -53,7 +55,7 @@ naveJefe.addEventListener('load', function () {
 	//Variables jefe
 	jefe = new Ship(naveJefe, 100 + widthVentana, 100, 100);
 }, false);
-naveJefe.src = "img/Example_ships/Alien-Mothership2.png";
+naveJefe.src = "img/Boss_Mothership.png";
 
 //Obtiene un sprite aleatorio para los enemigos
 function GetRandomEnemySprite() {

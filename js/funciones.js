@@ -74,6 +74,8 @@ function disparar() {
 	else {
 		posMunY = pj.posY + pj.altura;
 	}
+	console.log(pj.anchura);
+	console.log(pj.altura);
 	pj.balas.push(new Municion("img/Muzzle_flashes/disparo1.png", pj.posX + pj.anchura, posMunY, 5, 3));
 }
 
@@ -236,10 +238,11 @@ function enemigoDispara(numEnemigo) {
 		enemigos[numEnemigo].posY + (enemigos[numEnemigo].posY / 2), 5, 3));
 }
 
-function gestionJefe(){
-	if (jefe.posX > widthVentana/2){jefe.posX--;}
-	else{jefe.posX = widthVentana/2;}
+function gestionJefe() {
+	if (jefe.posX > widthVentana / 2) { jefe.posX--; }
+	else { jefe.posX = widthVentana / 2; }
 	jefe.posY += Math.random() * 4 - 2;
+	gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
 }
 
 //Funcion de la gestion de las zonas tactiles
