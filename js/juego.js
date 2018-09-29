@@ -28,6 +28,9 @@ function bucle() {
 				enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
 			}
 		}
+		if (controlTiempo % 500 == 0) {
+			spawnPowerup();
+		}
 		if (controlTiempo % 5000 == 0) {
 			borraSonidos();
 		}
@@ -35,6 +38,7 @@ function bucle() {
 		limpiaBalas();
 		movimientoPJ();
 		movimientoEnemigo();
+		movimientoPowerup();
 		gestionJefe();
 		/*if (controlTiempo % 100) {
 			colisionJefe();

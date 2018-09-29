@@ -244,12 +244,58 @@ function movimientoEnemigo() {
 	}
 }
 
-
-
 //Funcion para la creacion de nuevos enemigos tras un tiempo de juego
 function spawnEnemy() {
 	var image = GetRandomEnemySprite();
 	enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));
+}
+
+function spawnPowerup() {
+	//Solo 1 powerup en pantalla a la vez
+	if (nPowerups == 0) {
+		var image = new Image();
+		var rnd = randomRangeNumber(0, 2);
+		var efecto = 0;
+		switch (rnd) {
+			case 0: image = misilesimg; efecto = 1;
+				break;
+			case 1: image = escudoimg; efecto = 2;
+				break;
+			case 2: image = velfuegoimg; efecto = 3;
+				break;
+		}
+		nPowerups = 1;
+		powerup.push(new Powerup(image, /*randomRangeNumber(1, 2) * widthVentana*/500, Math.random() * heightVentana, efecto, 100));
+	}
+}
+
+function movimientoPowerup() {
+	for (var p in powerup) {
+		if (pj.posX > powerup[p].powX && pj.posX < powerup[p].powX + powerup[p].anchura && pj.posY > powerup[p].powY && pj.posY < powerup[p].powY + powerup[p].altura) {
+			//Activamos el efecto
+			activo = 1;
+			activarPowerup(powerup[p].efecto);
+			//Borramos el powerup
+			nPowerups = 0;
+			powerup.splice(e, 1);
+			//Añadimos el audio de muerte de enemigo
+			$("#contieneAudio").append('<audio id="explo" src="audio/SFX_Powerup_03.wav" autoplay></audio>');
+			break;
+		}
+		if (activo == 1) { tiempoefecto++; }
+		if (tiempoefecto >= powerup[p].tiempo) {
+			desactivarPowerup(powerup[p].efecto);
+			tiempoefecto = 0;
+		}
+		//Si el powerup se sale de la pantalla, lo borramos directamente
+		if (powerup[p].powX < 20 || powerup[p].powY < 0 || powerup[p].powY + powerup[p].altura > heightVentana) {
+			powerup.splice(e, 1);
+			break;
+		}
+		powerup[p].powX--;
+		powerup[p].powY += Math.random() * 4 - 2;
+		gameContext.drawImage(powerup[p].sprite, powerup[p].powX, powerup[p].powY);
+	}
 }
 
 //Funcion para hacer que un enemigo aleatorio dispare
@@ -368,5 +414,20 @@ function levelCompleted() {
 		location.reload();
 	} else {
 		//carga el html de juego ganado
+	}
+}
+
+function activarPowerup(efecto) {
+	switch (efecto) {
+		case 1:
+			pj.balas.damage = 20;
+			pj.balas.sprite.src = "img/Muzzle_flashes/misil.png";
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
 	}
 }
