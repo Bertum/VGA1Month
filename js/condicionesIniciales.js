@@ -31,13 +31,12 @@ var trophy = 0;
 
 var navePJ = new Image();
 var pj = 0;
-navePJ.src = "img/futuramaShip_smaller.png";
 navePJ.addEventListener('load', function () {
 	pj = new Ship(navePJ, 100, 100, 20);
 	//Crea el trofeo para acabar el nivel
 	trophy = new Trophy(trophyImage, 10000, window.innerHeight / 2);
 }, false);
-navePJ.src = "img/Example_ships/13.png";
+navePJ.src = "img/futuramaShip_smaller.png";
 
 
 var nEnemigos = 3;
@@ -57,6 +56,7 @@ naveEnemiga2.src = "img/Small_enemyShip_2/8.png";
 
 var naveJefe = new Image();
 var jefe = 0;
+var musicaJefe = 0;
 
 naveJefe.addEventListener('load', function () {
 	//Variables jefe

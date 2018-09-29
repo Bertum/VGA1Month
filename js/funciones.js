@@ -43,7 +43,6 @@ function gestionTeclas() {
 		if (event.which == 40 || event.which == 83) {
 			pj.movY = "abajo";
 		}
-		playAndHideMessages();
 	});
 	//Si ni izquierda ni derecha se presionan, no muevas el personaje.
 	$(document).keyup(function (event) {
@@ -75,8 +74,8 @@ function disparar() {
 	else {
 		posMunY = pj.posY + pj.altura;
 	}
-	console.log(pj.anchura);
-	console.log(pj.altura);
+	//console.log(pj.anchura);
+	//console.log(pj.altura);
 	pj.balas.push(new Municion("img/Muzzle_flashes/disparo1.png", pj.posX + pj.anchura, posMunY, 5, 3));
 }
 
@@ -86,6 +85,7 @@ function colisionBalas() {
 	for (var i in pj.balas) {
 		//Incrementamos su X acorde a su velocidad
 		pj.balas[i].munX += pj.balas[i].munV;
+		console.log(pj.balas[i]);
 		//Dibujamos
 		ammoContext.drawImage(pj.balas[i].sprite, pj.balas[i].munX, pj.balas[i].munY);
 		//Por cada enemigo vigilamos que colisionen
@@ -103,6 +103,21 @@ function colisionBalas() {
 				$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
 				break;
 			}
+		}
+		if (pj.balas[i].munX > jefe.posX && pj.balas[i].munX < jefe.posX + jefe.anchura && pj.balas[i].munY > jefe.posY && pj.balas[i].munY < jefe.posY + jefe.altura) {
+			//Borramos al enemigo
+			jefe.damageTaken += pj.balas[i].damage;
+			if (jefe.vida <= jefe.damageTaken) {
+				puntuacion += 50;
+				//$("#contieneAudio").append('<audio id="explo" src="audio/boom7.wav" autoplay></audio>');
+				//alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+			}
+			$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
+			//Borramos la bala
+			pj.balas.splice(i, 1);
+			//Incrementamos la puntuacion
+			$("#puntuacion").html(puntuacion);
+			break;
 		}
 	}
 	//Repasamos las balas de cada enemigo enemigo
@@ -215,7 +230,7 @@ function movimientoEnemigo() {
 			break;
 		}
 		//Si el enemigo se sale de la pantalla, lo borramos directamente
-		if (enemigos[e].posX < 20 || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
+		if (enemigos[e].posX < 20 /*|| enemigos[e].posX > widthVentana - enemigos[e].anchura*/ || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
 			enemigos.splice(e, 1);
 			break;
 		}
@@ -233,16 +248,47 @@ function spawnEnemy() {
 
 //Funcion para hacer que un enemigo aleatorio dispare
 function enemigoDispara(numEnemigo) {
+	//console.log(numEnemigo);
 	enemigos[numEnemigo].balas.push(new Municion("img/Muzzle_flashes/disparo2.png",
 		enemigos[numEnemigo].posX,
 		enemigos[numEnemigo].posY + (enemigos[numEnemigo].posY / 2), 5, 3));
 }
 
 function gestionJefe() {
-	if (jefe.posX > widthVentana / 2) { jefe.posX--; }
-	else { jefe.posX = widthVentana / 2; }
-	jefe.posY += Math.random() * 4 - 2;
-	gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
+	if (puntuacion >= 10) {
+		if (musicaJefe == 0) {
+			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay controls loop></audio>');
+			musicaJefe = 1;
+		}
+		if (jefe.posX > widthVentana / 2) { jefe.posX--; }
+		else { jefe.posX = widthVentana / 2; }
+		jefe.posY += Math.random() * 4 - 2;
+		gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
+		//if (controlTiempo % 100 == 0) { jefeDispara(); }
+	}
+}
+
+function jefeDispara() {
+	jefe.balas.push(new Municion("img/Muzzle_flashes/disparo2.png",
+		jefe.posX,
+		jefe.posY + (jefe.posY / 2), 5, 3));
+	console.log(jefe.posX);
+	console.log(jefe.posY + (jefe.posY / 2));
+	for (var i in jefe.balas) {
+		//Decrementamos su X acorde a su velocidad ya que van en sentido contrario a las del pj.
+		jefe.balas[i].munX -= jefe.balas[i].munV;
+		//Dibujamos
+		ammoContext.drawImage(jefe.balas[i].sprite, jefe.balas[i].munX, jefe.balas[i].munY);
+		//Si colisiona con el enemigo e
+		if (jefe.balas[i].munX > pj.posX && jefe.balas[i].munX < pj.posX + pj.anchura &&
+			jefe.balas[i].munY > pj.posY && jefe.balas[i].munY < pj.posY + pj.altura) {
+			//Dañamos al personaje
+			pj.damageTaken += jefe.balas[i].damage;
+			//Borramos la bala
+			jefe.balas.splice(i, 1);
+			break;
+		}
+	}
 }
 
 //Funcion de la gestion de las zonas tactiles
@@ -253,7 +299,7 @@ function gestionZonas() {
 	$("#derecha").mousedown(function () { pj.movX = "derecha"; });
 	$("#izquierda").mousedown(function () { pj.movX = "izquierda"; });
 	//Disparos
-	$("#disparo").click(function () { disparar(); playAndHideMessages(); });
+	$("#disparo").click(function () { disparar(); });
 	//Detiene el movimiento una vez soltemos el raton
 	$(document).mouseup(function () {
 		pj.movX = 0;
@@ -274,45 +320,4 @@ function clearCanvas() {
 	backgroundContext.clearRect(0, 0, widthVentana, heightVentana);
 	gameContext.clearRect(0, 0, widthVentana, heightVentana);
 	ammoContext.clearRect(0, 0, widthVentana, heightVentana);
-}
-
-function drawTrophy() {
-	gameContext.drawImage(trophy.image, trophy.posX, trophy.posY);
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for (var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
-}
-
-function playAndHideMessages() {
-	gamePaused = false;
-	$("#asteroid").hide();
-}
-
-function hitTrophy() {
-	if (pj.posX > trophy.posX && pj.posX < trophy.posX + trophy.width &&
-		pj.posY > trophy.posY && pj.posY < trophy.posY + trophy.height) {
-		levelCompleted();
-	}
-}
-
-function levelCompleted() {
-	if (level == 1) {
-		localStorage.setItem("level", 2);
-		location.reload();
-	} else {
-		//carga el html de juego ganado
-	}
 }
