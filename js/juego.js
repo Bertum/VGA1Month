@@ -3,6 +3,7 @@ $(document).ready(function () {
 });
 function inicio() {
 	level = localStorage.getItem("level");
+	console.log(level);
 	gamePaused = true;
 	$("canvas").attr("width", widthVentana);
 	$("canvas").attr("height", heightVentana);
@@ -35,9 +36,9 @@ function bucle() {
 		movimientoPJ();
 		movimientoEnemigo();
 		gestionJefe();
-		if (controlTiempo % 100) {
+		/*if (controlTiempo % 100) {
 			colisionJefe();
-		}
+		}*/
 		updateHPBar();
 		finDelJuego();
 		drawTrophy();
@@ -51,6 +52,6 @@ function bucle() {
 
 function finDelJuego() {
 	if (pj.damageTaken >= pj.vida) {
-		window.location.href = "mainMenu.html"
+		window.location.href = "gameOver.html"
 	}
 }

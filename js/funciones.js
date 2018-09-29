@@ -104,6 +104,25 @@ function colisionBalas() {
 				break;
 			}
 		}
+		/*if (pj.balas[i].munX > jefe.posX && pj.balas[i].munX < jefe.posX + jefe.anchura && pj.balas[i].munY > jefe.posY && pj.balas[i].munY < jefe.posY + jefe.altura) {
+			//Restamos vida al jefe
+			jefe.damageTaken += pj.balas[i].damage;
+			console.log(jefe.vida);
+			//Si la vida del jefe llega a 0, ganamos
+			if (jefe.vida <= jefe.damageTaken) {
+				$("#contieneAudio").append('<audio id="explo" src="audio/boom7.wav" autoplay></audio>');
+				pj.balas.splice(i, 1);
+				puntuacion += 50;
+				$("#puntuacion").html(puntuacion);
+				alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+			}
+			$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
+			//Borramos la bala
+			pj.balas.splice(i, 1);
+			//Incrementamos la puntuacion
+			$("#puntuacion").html(puntuacion);
+			break;
+		}*/
 	}
 	//Repasamos las balas de cada enemigo enemigo
 	for (var e in enemigos) {
@@ -242,7 +261,7 @@ function enemigoDispara(numEnemigo) {
 }
 
 function gestionJefe() {
-	if (puntuacion >= 10) {
+	if (level == 2 && puntuacion >= 10) {
 		if (musicaJefe == 0) {
 			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay controls loop></audio>');
 			musicaJefe = 1;
@@ -251,7 +270,7 @@ function gestionJefe() {
 		else { jefe.posX = widthVentana / 2; }
 		jefe.posY += Math.random() * 4 - 2;
 		gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
-		//if (controlTiempo % 100 == 0) { jefeDispara(); }
+		if (controlTiempo % 100 == 0) { colisionJefe(); }
 	}
 }
 
@@ -259,40 +278,19 @@ function colisionJefe() {
 	jefe.balas.push(new Municion("img/Muzzle_flashes/disparo2.png",
 		jefe.posX,
 		jefe.posY + (jefe.posY / 2), 5, 3));
-	//console.log(jefe.posX);
-	//console.log(jefe.posY + (jefe.posY / 2));
+
 	for (var i in jefe.balas) {
 		//Decrementamos su X acorde a su velocidad ya que van en sentido contrario a las del pj.
 		jefe.balas[i].munX -= jefe.balas[i].munV;
 		//Dibujamos
 		ammoContext.drawImage(jefe.balas[i].sprite, jefe.balas[i].munX, jefe.balas[i].munY);
-		//Si colisiona con el personaje
+		//Si colisiona con el enemigo e
 		if (jefe.balas[i].munX > pj.posX && jefe.balas[i].munX < pj.posX + pj.anchura &&
 			jefe.balas[i].munY > pj.posY && jefe.balas[i].munY < pj.posY + pj.altura) {
 			//Dañamos al personaje
 			pj.damageTaken += jefe.balas[i].damage;
 			//Borramos la bala
 			jefe.balas.splice(i, 1);
-			break;
-		}
-		//Si colisiona con el jefe
-		if (pj.balas[i].munX > jefe.posX && pj.balas[i].munX < jefe.posX + jefe.anchura && pj.balas[i].munY > jefe.posY && pj.balas[i].munY < jefe.posY + jefe.altura) {
-			//Restamos vida al jefe
-			jefe.damageTaken += pj.balas[i].damage;
-			console.log(jefe.vida);
-			//Si la vida del jefe llega a 0, ganamos
-			if (jefe.vida <= jefe.damageTaken) {
-				$("#contieneAudio").append('<audio id="explo" src="audio/boom7.wav" autoplay></audio>');
-				pj.balas.splice(i, 1);
-				puntuacion += 50;
-				$("#puntuacion").html(puntuacion);
-				alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
-			}
-			$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
-			//Borramos la bala
-			pj.balas.splice(i, 1);
-			//Incrementamos la puntuacion
-			$("#puntuacion").html(puntuacion);
 			break;
 		}
 	}
@@ -333,7 +331,7 @@ function clearCanvas() {
 }
 
 function drawTrophy() {
-	gameContext.drawImage(trophy.image, trophy.posX, trophy.posY);
+	if (level == 1) { gameContext.drawImage(trophy.image, trophy.posX, trophy.posY); }
 }
 
 function getCookie(cname) {

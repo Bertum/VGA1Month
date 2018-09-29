@@ -52,7 +52,7 @@ naveEnemiga.addEventListener('load', function () {
 	}
 }, false);
 naveEnemiga.src = "img/small_enemyShip.png";
-naveEnemiga2.src = "img/Small_enemyShip_2/8.png";
+naveEnemiga2.src = "img/Small_enemyShip_2.png";
 
 var naveJefe = new Image();
 var jefe = 0;
