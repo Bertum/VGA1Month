@@ -48,9 +48,6 @@ function bucle() {
 
 function finDelJuego() {
 	if (pj.damageTaken >= pj.vida) {
-		//alert("GAME OVER \nTOTAL SCORE = " + puntuacion);
-		//Reiniciamos la pagina
-		//clearTimeout(temporizador);
-		//location.reload(true);
+		window.location.href = "mainMenu.html"
 	}
 }

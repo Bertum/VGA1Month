@@ -54,3 +54,14 @@ body,html{margin:0px;padding:0px;overflow:hidden}
 	  bottom: 300px;
 	  left:200px;
   }
+#gameOver, #gameOverBackground{
+	height: 100%;
+	 width: 100%; 
+	overflow: hidden ;
+}
+
+#restartGame{
+	position: absolute;
+	top: 50%;
+	left: 45%
+}
