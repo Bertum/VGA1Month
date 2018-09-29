@@ -1,19 +1,19 @@
 //Establecemos la barra de vida del personaje
 function drawHPBar() {
-	contexto.fillStyle = "#00A420";
-	contexto.rect(5, heightVentana / 4, 10, pj.vida * 10);
-	contexto.fillRect(5, widthVentana / 4, 10, pj.vida * 10);
-	contexto.stroke();
+	gameContext.fillStyle = "#00A420";
+	gameContext.rect(5, heightVentana / 4, 10, pj.vida * 10);
+	gameContext.fillRect(5, widthVentana / 4, 10, pj.vida * 10);
+	gameContext.stroke();
 }
 
 //Llamamos a esto dentro del bucle para actualizar de forma constante la vida del personaje.
 function updateHPBar() {
 	//Limpiamos el rectangulo
-	contexto.clearRect(5, heightVentana / 4, 10, pj.vida * 10);
+	gameContext.clearRect(5, heightVentana / 4, 10, pj.vida * 10);
 	//Lo llenamos de arriba a abajo
-	contexto.fillStyle = "#00A420";
-	if ((pj.damageTaken / pj.vida) > 0.5) contexto.fillStyle = "#FF0000";
-	contexto.fillRect(5,
+	gameContext.fillStyle = "#00A420";
+	if ((pj.damageTaken / pj.vida) > 0.5) gameContext.fillStyle = "#FF0000";
+	gameContext.fillRect(5,
 		(heightVentana / 4) + pj.damageTaken * 10,
 		10,
 		(pj.vida - pj.damageTaken) * 10
@@ -61,7 +61,7 @@ function drawStars() {
 	widthVentana = window.innerWidth;
 	heightVentana = window.innerHeight;
 	for (var i in arrEstrellas) {
-		contexto.drawImage(arrEstrellas[i], Math.random() * widthVentana, Math.random() * heightVentana);
+		backgroundContext.drawImage(arrEstrellas[i], Math.random() * widthVentana, Math.random() * heightVentana);
 	}
 }
 
@@ -84,7 +84,7 @@ function colisionBalas() {
 		//Incrementamos su X acorde a su velocidad
 		pj.balas[i].munX += pj.balas[i].munV;
 		//Dibujamos
-		contexto.drawImage(pj.balas[i].sprite, pj.balas[i].munX, pj.balas[i].munY);
+		ammoContext.drawImage(pj.balas[i].sprite, pj.balas[i].munX, pj.balas[i].munY);
 		//Por cada enemigo vigilamos que colisionen
 		for (var e in enemigos) {
 			//Si colisiona con el enemigo e
@@ -108,7 +108,7 @@ function colisionBalas() {
 			//Decrementamos su X acorde a su velocidad ya que van en sentido contrario a las del pj.
 			enemigos[e].balas[i].munX -= enemigos[e].balas[i].munV;
 			//Dibujamos
-			contexto.drawImage(enemigos[e].balas[i].sprite, enemigos[e].balas[i].munX, enemigos[e].balas[i].munY);
+			ammoContext.drawImage(enemigos[e].balas[i].sprite, enemigos[e].balas[i].munX, enemigos[e].balas[i].munY);
 			//Si colisiona con el enemigo e
 			if (enemigos[e].balas[i].munX > pj.posX && enemigos[e].balas[i].munX < pj.posX + pj.anchura &&
 				enemigos[e].balas[i].munY > pj.posY && enemigos[e].balas[i].munY < pj.posY + pj.altura) {
@@ -182,7 +182,7 @@ function movimientoPJ() {
 			break
 	}
 
-	contexto.drawImage(pj.sprite, pj.posX, pj.posY);
+	gameContext.drawImage(pj.sprite, pj.posX, pj.posY);
 }
 
 //Funcion de control del aceleramiento y frenado de la nave
@@ -218,7 +218,7 @@ function movimientoEnemigo() {
 		}
 		enemigos[e].posX--;
 		enemigos[e].posY += Math.random() * 4 - 2;
-		contexto.drawImage(enemigos[e].sprite, enemigos[e].posX, enemigos[e].posY);
+		gameContext.drawImage(enemigos[e].sprite, enemigos[e].posX, enemigos[e].posY);
 	}
 }
 
@@ -258,4 +258,10 @@ function borraSonidos() {
 
 function randomRangeNumber(min, max) {
 	return Math.round(Math.random() * (max - min) + min);
+}
+
+function clearCanvas() {
+	backgroundContext.clearRect(0, 0, widthVentana, heightVentana);
+	gameContext.clearRect(0, 0, widthVentana, heightVentana);
+	ammoContext.clearRect(0, 0, widthVentana, heightVentana);
 }

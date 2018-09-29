@@ -1,5 +1,6 @@
 body,html{margin:0px;padding:0px;overflow:hidden}
-#lienzo{border:1px solid black;background:black}
+#backgroundCanvas{background: black;}
+canvas{border:1px solid black;background:transparent;position: absolute;}
 #izquierda{left:0%;top:30%;width:25%;height:50%}
 #derecha{right:0%;top:30%;width:25%;height:50%}
 #arriba{top:0%;left:25%;width:50%;height:25%}
