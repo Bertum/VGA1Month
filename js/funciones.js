@@ -43,6 +43,7 @@ function gestionTeclas() {
 		if (event.which == 40 || event.which == 83) {
 			pj.movY = "abajo";
 		}
+		playAndHideMessages();
 	});
 	//Si ni izquierda ni derecha se presionan, no muevas el personaje.
 	$(document).keyup(function (event) {
@@ -230,7 +231,7 @@ function movimientoEnemigo() {
 			break;
 		}
 		//Si el enemigo se sale de la pantalla, lo borramos directamente
-		if (enemigos[e].posX < 20 /*|| enemigos[e].posX > widthVentana - enemigos[e].anchura*/ || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
+		if (enemigos[e].posX < 20 || enemigos[e].posY < 0 || enemigos[e].posY + enemigos[e].altura > heightVentana) {
 			enemigos.splice(e, 1);
 			break;
 		}
@@ -239,6 +240,8 @@ function movimientoEnemigo() {
 		gameContext.drawImage(enemigos[e].sprite, enemigos[e].posX, enemigos[e].posY);
 	}
 }
+
+
 
 //Funcion para la creacion de nuevos enemigos tras un tiempo de juego
 function spawnEnemy() {
@@ -299,7 +302,10 @@ function gestionZonas() {
 	$("#derecha").mousedown(function () { pj.movX = "derecha"; });
 	$("#izquierda").mousedown(function () { pj.movX = "izquierda"; });
 	//Disparos
-	$("#disparo").click(function () { disparar(); });
+	$("#disparo").click(function () {
+		disparar();
+		playAndHideMessages();
+	});
 	//Detiene el movimiento una vez soltemos el raton
 	$(document).mouseup(function () {
 		pj.movX = 0;
@@ -320,4 +326,45 @@ function clearCanvas() {
 	backgroundContext.clearRect(0, 0, widthVentana, heightVentana);
 	gameContext.clearRect(0, 0, widthVentana, heightVentana);
 	ammoContext.clearRect(0, 0, widthVentana, heightVentana);
+}
+
+function drawTrophy() {
+	gameContext.drawImage(trophy.image, trophy.posX, trophy.posY);
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function playAndHideMessages() {
+	gamePaused = false;
+	$("#asteroid").hide();
+}
+
+function hitTrophy() {
+	if (pj.posX > trophy.posX && pj.posX < trophy.posX + trophy.width &&
+		pj.posY > trophy.posY && pj.posY < trophy.posY + trophy.height) {
+		levelCompleted();
+	}
+}
+
+function levelCompleted() {
+	if (level == 1) {
+		localStorage.setItem("level", 2);
+		location.reload();
+	} else {
+		//carga el html de juego ganado
+	}
 }
