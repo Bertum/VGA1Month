@@ -35,6 +35,9 @@ function bucle() {
 		movimientoPJ();
 		movimientoEnemigo();
 		gestionJefe();
+		if (controlTiempo % 100) {
+			colisionJefe();
+		}
 		updateHPBar();
 		finDelJuego();
 		drawTrophy();
