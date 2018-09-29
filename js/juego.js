@@ -2,6 +2,8 @@ $(document).ready(function () {
 	inicio();
 });
 function inicio() {
+	level = localStorage.getItem("level");
+	gamePaused = true;
 	$("canvas").attr("width", widthVentana);
 	$("canvas").attr("height", heightVentana);
 	temporizador = setTimeout("bucle()", 1000);
@@ -12,28 +14,33 @@ function inicio() {
 	musica.volume = 0.05;
 }
 function bucle() {
-	clearCanvas();
-	acelerado();
-	drawStars();
-	if (controlTiempo % 100) {
-		colisionBalas();
-	}
-	if (controlTiempo % 50 == 0) {
-		spawnEnemy();
-		if (level == 2) {
-			enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
+	if (!gamePaused) {
+		clearCanvas();
+		acelerado();
+		drawStars();
+		if (controlTiempo % 100) {
+			colisionBalas();
 		}
+		if (controlTiempo % 50 == 0) {
+			spawnEnemy();
+			if (level == 2) {
+				enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
+			}
+		}
+		if (controlTiempo % 5000 == 0) {
+			borraSonidos();
+		}
+		trophy.move(speed);
+		limpiaBalas();
+		movimientoPJ();
+		movimientoEnemigo();
+		gestionJefe();
+		updateHPBar();
+		finDelJuego();
+		drawTrophy();
+		hitTrophy();
+		controlTiempo++;
 	}
-	if (controlTiempo % 5000 == 0) {
-		borraSonidos();
-	}
-	limpiaBalas();
-	movimientoPJ();
-	movimientoEnemigo();
-	gestionJefe();
-	updateHPBar();
-	finDelJuego();
-	controlTiempo++;
 	clearTimeout(temporizador);
 	temporizador = setTimeout("bucle()", 15);
 	finDelJuego();
