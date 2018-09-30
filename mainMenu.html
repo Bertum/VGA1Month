@@ -9,8 +9,9 @@
 <body>
 	<div class="canvas-container">
 		<canvas id="backgroundMainMenu"></canvas>
-		<button id="tutorial" onclick="launchLevel(1)" style="left:40px;top:25px;"></button>
-		<button id="level2" onclick="launchLevel(2)" style="left:40px;top:105px;"></button>
+		<button id="tutorial" onclick="launchLevel(1)"></button>
+		<button id="level2" onclick="launchLevel(2)"></button>
+		<audio id="musica" src="audio/Theme_Song.mp3" autoplay></audio>
 	</div>
 </body>
 <script src="jquery-3.3.1.min.js"></script>
@@ -20,6 +21,13 @@
 	var canvas = document.getElementById("backgroundMainMenu");
 	canvas.width = widthVentana;
 	canvas.height = heightVentana;
+	var tutorial = document.getElementById("tutorial");
+	tutorial.style.left = (widthVentana/2 - 122)+"px";
+	tutorial.style.top = (heightVentana/2)+"px";
+	var levelTwo = document.getElementById("level2");
+	levelTwo.style.left = (widthVentana/2 - 122)+"px";
+	levelTwo.style.top = (heightVentana/2 + 100)+"px";
+	
 	function launchLevel(level) {
 		localStorage.setItem("level", level);
 		window.location.href = "index.html"
