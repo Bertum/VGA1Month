@@ -103,26 +103,26 @@ function colisionBalas() {
 				$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
 				break;
 			}
-		}
-		/*if (pj.balas[i].munX > jefe.posX && pj.balas[i].munX < jefe.posX + jefe.anchura && pj.balas[i].munY > jefe.posY && pj.balas[i].munY < jefe.posY + jefe.altura) {
-			//Restamos vida al jefe
-			jefe.damageTaken += pj.balas[i].damage;
-			console.log(jefe.vida);
-			//Si la vida del jefe llega a 0, ganamos
-			if (jefe.vida <= jefe.damageTaken) {
-				$("#contieneAudio").append('<audio id="explo" src="audio/boom7.wav" autoplay></audio>');
+			if (pj.balas[i].munX > jefe.posX && pj.balas[i].munX < jefe.posX + jefe.anchura && pj.balas[i].munY > jefe.posY && pj.balas[i].munY < jefe.posY + jefe.altura) {
+				//Restamos vida al jefe
+				jefe.damageTaken += pj.balas[i].damage;
+				//console.log(jefe.vida);
+				//Si la vida del jefe llega a 0, ganamos
+				if (jefe.vida <= jefe.damageTaken) {
+					$("#contieneAudio").append('<audio id="explo" src="audio/boom7.wav" autoplay></audio>');
+					pj.balas.splice(i, 1);
+					puntuacion += 50;
+					$("#puntuacion").html(puntuacion);
+					alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+				}
+				$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
+				//Borramos la bala
 				pj.balas.splice(i, 1);
-				puntuacion += 50;
+				//Incrementamos la puntuacion
 				$("#puntuacion").html(puntuacion);
-				alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+				break;
 			}
-			$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
-			//Borramos la bala
-			pj.balas.splice(i, 1);
-			//Incrementamos la puntuacion
-			$("#puntuacion").html(puntuacion);
-			break;
-		}*/
+		}
 	}
 	//Repasamos las balas de cada enemigo enemigo
 	for (var e in enemigos) {
@@ -271,13 +271,17 @@ function spawnPowerup() {
 
 function movimientoPowerup() {
 	for (var p in powerup) {
-		if (pj.posX > powerup[p].powX && pj.posX < powerup[p].powX + powerup[p].anchura && pj.posY > powerup[p].powY && pj.posY < powerup[p].powY + powerup[p].altura) {
+		//console.log(powerup[p].powX);
+		//console.log(pj.posX + pj.anchura);
+
+		if (pj.posX + pj.anchura > powerup[p].powX && pj.posX + pj.anchura < powerup[p].powX + powerup[p].anchura && pj.posY > powerup[p].powY && pj.posY < powerup[p].powY + powerup[p].altura) {
 			//Activamos el efecto
 			activo = 1;
 			activarPowerup(powerup[p].efecto);
 			//Borramos el powerup
+			//console.log("aqui llego");
 			nPowerups = 0;
-			powerup.splice(e, 1);
+			powerup.splice(p, 1);
 			//Añadimos el audio de muerte de enemigo
 			$("#contieneAudio").append('<audio id="explo" src="audio/SFX_Powerup_03.wav" autoplay></audio>');
 			break;
@@ -289,7 +293,7 @@ function movimientoPowerup() {
 		}
 		//Si el powerup se sale de la pantalla, lo borramos directamente
 		if (powerup[p].powX < 20 || powerup[p].powY < 0 || powerup[p].powY + powerup[p].altura > heightVentana) {
-			powerup.splice(e, 1);
+			powerup.splice(p, 1);
 			break;
 		}
 		powerup[p].powX--;
@@ -307,7 +311,7 @@ function enemigoDispara(numEnemigo) {
 }
 
 function gestionJefe() {
-	if (level == 2 && puntuacion >= 10) {
+	if (level == 2 && puntuacion >= 20) {
 		if (musicaJefe == 0) {
 			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay controls loop></audio>');
 			musicaJefe = 1;
@@ -316,15 +320,25 @@ function gestionJefe() {
 		else { jefe.posX = widthVentana / 2; }
 		jefe.posY += Math.random() * 4 - 2;
 		gameContext.drawImage(jefe.sprite, jefe.posX, jefe.posY);
-		//if (controlTiempo % 100 == 0) { colisionJefe(); }
+		balasjefe();
+		if (controlTiempo % 80 == 0) { disparajefe(); }
 	}
 }
 
-function colisionJefe() {
+function disparajefe() {
+	var posMunY = 0;
+	if (jefe.balas.length % 2) {
+		posMunY = jefe.posY + 100;
+	}
+	else {
+		posMunY = jefe.posY + jefe.altura - 100;
+	}
 	jefe.balas.push(new Municion("img/Muzzle_flashes/disparo2.png",
 		jefe.posX,
-		jefe.posY + (jefe.posY / 2), 5, 3));
+		posMunY, 5, 3));
+}
 
+function balasjefe() {
 	for (var i in jefe.balas) {
 		//Decrementamos su X acorde a su velocidad ya que van en sentido contrario a las del pj.
 		jefe.balas[i].munX -= jefe.balas[i].munV;
@@ -424,10 +438,25 @@ function activarPowerup(efecto) {
 			pj.balas.sprite = "img/Muzzle_flashes/misil.png";
 			break;
 		case 2:
-
+			alert("Has recogido un escudo");
 			break;
 		case 3:
+			alert("Ahora disparas más rápido");
+			break;
+	}
+}
 
+function desactivarPowerup(efecto) {
+	switch (efecto) {
+		case 1:
+			pj.balas.damage = 5;
+			pj.balas.sprite.src = "img/Muzzle_flashes/disparo1.png";
+			break;
+		case 2:
+			alert("Se ha terminado el escudo");
+			break;
+		case 3:
+			alert("La velocidad de disparo ha vuelto a la normal");
 			break;
 	}
 }

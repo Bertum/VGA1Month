@@ -28,7 +28,7 @@ function bucle() {
 				enemigoDispara(Math.ceil(Math.random() * (enemigos.length - 1)));
 			}
 		}
-		if (controlTiempo % 500 == 0) {
+		if (controlTiempo % Math.round(Math.random() * 500) == 0) {
 			spawnPowerup();
 		}
 		if (controlTiempo % 5000 == 0) {
