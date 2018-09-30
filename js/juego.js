@@ -3,8 +3,10 @@ $(document).ready(function () {
 });
 function inicio() {
 	level = localStorage.getItem("level");
-	console.log(level);
 	gamePaused = true;
+	if (level == 2) {
+		playAndHideMessages();
+	}
 	$("canvas").attr("width", widthVentana);
 	$("canvas").attr("height", heightVentana);
 	temporizador = setTimeout("bucle()", 1000);
