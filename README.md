@@ -29,7 +29,6 @@ A nivel de código:
 1 clase meteorito (O no)
 N clases para gestionar las mecánicas
 
-Tareas de cada uno:
-Miguel - pantalla de inicio, pop-ups que paren el juego (historia), game over
-Alberto - power ups, enemigos en general
-Carlos - Jefe final, musica
+Para ejecutar el juego abrir mainMenu.html y seguir las instrucciones.
+
+GRABAR VIDEO

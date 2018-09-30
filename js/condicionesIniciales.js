@@ -13,7 +13,9 @@ var widthVentana = window.innerWidth;
 var heightVentana = window.innerHeight;
 var level = 1;
 var speed = 6;
-var gamePaused = false;;
+var gamePaused = false;
+var imgMunicion = "img/Muzzle_flashes/disparo1.png";
+var danioMunicion = 5;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;

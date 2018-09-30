@@ -77,7 +77,7 @@ function disparar() {
 	}
 	//console.log(pj.anchura);
 	//console.log(pj.altura);
-	pj.balas.push(new Municion("img/Muzzle_flashes/disparo1.png", pj.posX + pj.anchura, posMunY, 5, 3));
+	pj.balas.push(new Municion(imgMunicion, pj.posX + pj.anchura, posMunY, danioMunicion, 3));
 }
 
 //Funcion para gestionar la colision de las balas
@@ -113,7 +113,7 @@ function colisionBalas() {
 					pj.balas.splice(i, 1);
 					puntuacion += 50;
 					$("#puntuacion").html(puntuacion);
-					alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+					//alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
 				}
 				$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
 				//Borramos la bala
@@ -271,8 +271,8 @@ function spawnPowerup() {
 
 function movimientoPowerup() {
 	for (var p in powerup) {
-		//console.log(powerup[p].powX);
-		//console.log(pj.posX + pj.anchura);
+		console.log(powerup[p].powX);
+		console.log(pj.posX + pj.anchura);
 
 		if (pj.posX + pj.anchura > powerup[p].powX && pj.posX + pj.anchura < powerup[p].powX + powerup[p].anchura && pj.posY > powerup[p].powY && pj.posY < powerup[p].powY + powerup[p].altura) {
 			//Activamos el efecto
@@ -313,7 +313,7 @@ function enemigoDispara(numEnemigo) {
 function gestionJefe() {
 	if (level == 2 && puntuacion >= 20) {
 		if (musicaJefe == 0) {
-			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay controls loop></audio>');
+			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay loop></audio>');
 			musicaJefe = 1;
 		}
 		if (jefe.posX > widthVentana / 2) { jefe.posX--; }
@@ -434,14 +434,14 @@ function levelCompleted() {
 function activarPowerup(efecto) {
 	switch (efecto) {
 		case 1:
-			pj.balas.damage = 20;
-			pj.balas.sprite = "img/Muzzle_flashes/misil.png";
+			danioMunicion = 20;
+			imgMunicion = "img/Muzzle_flashes/misil.png"
 			break;
 		case 2:
-			alert("Has recogido un escudo");
+			//alert("Has recogido un escudo");
 			break;
 		case 3:
-			alert("Ahora disparas más rápido");
+			//alert("Ahora disparas más rápido");
 			break;
 	}
 }
@@ -449,14 +449,14 @@ function activarPowerup(efecto) {
 function desactivarPowerup(efecto) {
 	switch (efecto) {
 		case 1:
-			pj.balas.damage = 5;
-			pj.balas.sprite.src = "img/Muzzle_flashes/disparo1.png";
+			danioMunicion = 5;
+			imgMunicion = "img/Muzzle_flashes/disparo1.png";
 			break;
 		case 2:
-			alert("Se ha terminado el escudo");
+			//alert("Se ha terminado el escudo");
 			break;
 		case 3:
-			alert("La velocidad de disparo ha vuelto a la normal");
+			//alert("La velocidad de disparo ha vuelto a la normal");
 			break;
 	}
 }
