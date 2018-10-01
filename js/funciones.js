@@ -12,7 +12,17 @@ function updateHPBar() {
 	gameContext.clearRect(5, heightVentana / 4, 10, pj.vida * 10);
 	//Lo llenamos de arriba a abajo
 	gameContext.fillStyle = "#00A420";
-	if ((pj.damageTaken / pj.vida) > 0.5) gameContext.fillStyle = "#FF0000";
+	if ((pj.damageTaken / pj.vida) > 0.5){
+		if (!mitadVida){
+			mitadVida = true;
+			gamePaused = true;
+			$("#asteroid").append(
+				"<img id='asteroidLeela' src='img/pop_ups/Bender_message.png'/><img id='asteroidMessage' src='img/pop_ups/halfLife_message.png' />"
+			);
+		}
+		gameContext.fillStyle = "#FF0000";
+	} 
+
 	gameContext.fillRect(5,
 		(heightVentana / 4) + pj.damageTaken * 10,
 		10,
@@ -114,6 +124,7 @@ function colisionBalas() {
 					puntuacion += 50;
 					$("#puntuacion").html(puntuacion);
 					//alert("HAS DESTRUIDO LAS NAVES OMICRONIANAS!");
+					levelCompleted();
 				}
 				$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
 				//Borramos la bala
@@ -271,8 +282,8 @@ function spawnPowerup() {
 
 function movimientoPowerup() {
 	for (var p in powerup) {
-		console.log(powerup[p].posX);
-		console.log(pj.posX + pj.anchura);
+		//console.log(powerup[p].posX);
+		//console.log(pj.posX + pj.anchura);
 
 		if (pj.posX + pj.anchura > powerup[p].posX && pj.posX + pj.anchura < powerup[p].posX + powerup[p].anchura && pj.posY > powerup[p].posY && pj.posY < powerup[p].posY + powerup[p].altura) {
 			//Activamos el efecto
@@ -312,6 +323,13 @@ function enemigoDispara(numEnemigo) {
 
 function gestionJefe() {
 	if (level == 2 && puntuacion >= 20) {
+		if(finalBossAppears){
+			finalBossAppears = false;
+			gamePaused = true;
+			$("#asteroid").append(
+				"<img id='asteroidLeela' src='img/pop_ups/Ndnd_message.png' /><img id='asteroidMessage' src='img/pop_ups/finalBoss_message.png' />"
+			);
+		}
 		if (musicaJefe == 0) {
 			$("#contieneAudio").append('<audio id="jefe" src="audio/Orbital_Colossus.mp3" autoplay loop></audio>');
 			musicaJefe = 1;
@@ -412,12 +430,14 @@ function getCookie(cname) {
 
 function playAndHideMessages() {
 	gamePaused = false;
-	$("#asteroid").hide();
+	//$("#asteroid").hide();
+	$("#asteroid").html("");
 }
 
 function hitTrophy() {
 	if (pj.posX > trophy.posX && pj.posX < trophy.posX + trophy.width &&
-		pj.posY > trophy.posY && pj.posY < trophy.posY + trophy.height) {
+		pj.posY > trophy.posY && pj.posY < trophy.posY + trophy.height
+		&& level==1) {	
 		levelCompleted();
 	}
 }
@@ -425,9 +445,11 @@ function hitTrophy() {
 function levelCompleted() {
 	if (level == 1) {
 		localStorage.setItem("level", 2);
+		//localStorage.setItem("health", pj.vida);
+		//localStorage.setItem("puntuacion", puntuacion);
 		location.reload();
-	} else {
-		//carga el html de juego ganado
+	} else {		
+		window.location.href = "gameWon.html";
 	}
 }
 
@@ -436,11 +458,32 @@ function activarPowerup(efecto) {
 		case 1:
 			danioMunicion = 20;
 			imgMunicion = "img/Muzzle_flashes/misil.png"
+			if(primerMisil){
+				primerMisil = false;
+				gamePaused = true;
+				$("#asteroid").append(
+					"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/missile_message.png' />"
+				);
+			}
 			break;
 		case 2:
+			if(primerEscudo){
+				primerEscudo = false;
+				gamePaused = true;
+				$("#asteroid").append(
+					"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/shield_message.png' />"
+				);
+			}
 			//alert("Has recogido un escudo");
 			break;
 		case 3:
+			if(primerDPS) {
+				primerDPS = false;
+				gamePaused = true;
+				$("#asteroid").append(
+					"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/rapidFire_message.png' />"
+				);
+			}
 			//alert("Ahora disparas más rápido");
 			break;
 	}

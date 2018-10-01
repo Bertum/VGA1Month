@@ -2,6 +2,10 @@
 var temporizador = "";
 var controlTiempo = 0;
 var puntuacion = 0;
+var level = 1;
+var speed = 6;
+var gamePaused = false;
+//Variables canvas
 var backgroundCanvas = document.getElementById("backgroundCanvas");
 var gameCanvas = document.getElementById("gameCanvas");
 var ammoCanvas = document.getElementById("ammoCanvas");
@@ -11,11 +15,14 @@ var ammoContext = ammoCanvas.getContext("2d"); //indico que el juego será 2D
 //Anchura y altura de ventana
 var widthVentana = window.innerWidth;
 var heightVentana = window.innerHeight;
-var level = 1;
-var speed = 6;
-var gamePaused = false;
+//Variables municion
 var imgMunicion = "img/Muzzle_flashes/disparo1.png";
 var danioMunicion = 5;
+//Variables pop-ups
+var primerEscudo = true;
+var primerMisil = true;
+var primerDPS = true;
+var mitadVida = false;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;
@@ -28,26 +35,31 @@ for (var i = 0; i < nEstrellas; i++) {
 var meteoriteImage = new Image();
 var trophyImage = new Image();
 meteoriteImage.src = "img/meteorites/meteorite.png";
-trophyImage.src = "img/trophy.png";
+
 var trophy = 0;
 
 var navePJ = new Image();
 var pj = 0;
 navePJ.addEventListener('load', function () {
 	pj = new Ship(navePJ, 100, 100, 20);
-	//Crea el trofeo para acabar el nivel
-	trophy = new Trophy(trophyImage, 10000, window.innerHeight / 2);
 }, false);
 navePJ.src = "img/futuramaShip_smaller.png";
 
+trophyImage.addEventListener('load', function () {
+	//Crea el trofeo para acabar el nivel
+	trophy = new Trophy(trophyImage, 10000, window.innerHeight / 2);
+}, false);
+trophyImage.src = "img/trophy.png";
 
+//Variables enemigos
 var nEnemigos = 3;
 var enemigos = new Array();
 naveEnemiga = new Image();
 var naveEnemiga2 = new Image();
+var finalBossAppears = true;
 
 naveEnemiga.addEventListener('load', function () {
-	//Variables enemigos
+	
 	for (var i = 0; i < nEnemigos; i++) {
 		var image = GetRandomEnemySprite();
 		enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));

@@ -2,10 +2,15 @@ $(document).ready(function () {
 	inicio();
 });
 function inicio() {
-	level = localStorage.getItem("level");
+	level = localStorage.getItem("level");	
 	gamePaused = true;
 	if (level == 2) {
-		playAndHideMessages();
+		$("#asteroid").html("");
+		$("#asteroid").append(
+			"<img id='asteroidLeela' src='img/pop_ups/Ndnd_message.png' /><img id='asteroidMessage' src='img/pop_ups/startSecondLevel_message.png' />"
+		);
+		//pj.vida = localStorage.getItem("health");
+		//puntuacion = localStorage.getItem("puntuacion");
 	}
 	$("canvas").attr("width", widthVentana);
 	$("canvas").attr("height", heightVentana);
@@ -58,6 +63,6 @@ function bucle() {
 
 function finDelJuego() {
 	if (pj.damageTaken >= pj.vida) {
-		window.location.href = "gameOver.html"
+		window.location.href = "gameOver.html";
 	}
 }
