@@ -281,7 +281,7 @@ function spawnPowerup() {
 	//Solo 1 powerup en pantalla a la vez
 	if (nPowerups == 0) {
 		var image = new Image();
-		var rnd = randomRangeNumber(0, 2)0;
+		var rnd = /*randomRangeNumber(0, 2)*/1;
 		var efecto = 0;
 		switch (rnd) {
 			case 0: image = misilesimg; efecto = 1;
@@ -292,7 +292,7 @@ function spawnPowerup() {
 				break;
 		}
 		nPowerups = 1;
-		powerup.push(new Powerup(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, efecto));
+		powerup.push(new Powerup(image, /*randomRangeNumber(1, 2) * */widthVentana, Math.random() * heightVentana, efecto));
 	}
 }
 
