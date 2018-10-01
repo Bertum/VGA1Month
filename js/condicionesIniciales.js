@@ -24,6 +24,8 @@ var primerMisil = true;
 var primerDPS = true;
 var mitadVida = false;
 var cadencia = 50;
+var escudo = 20;
+var escudoactivo = false;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;

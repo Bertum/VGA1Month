@@ -145,8 +145,18 @@ function colisionBalas() {
 			//Si colisiona con el enemigo e
 			if (enemigos[e].balas[i].munX > pj.posX && enemigos[e].balas[i].munX < pj.posX + pj.anchura &&
 				enemigos[e].balas[i].munY > pj.posY && enemigos[e].balas[i].munY < pj.posY + pj.altura) {
-				//Dañamos al personaje
-				pj.damageTaken += enemigos[e].balas[i].damage;
+				//Si hay un escudo, recibe el impacto
+				if (escudoactivo) {
+					escudo -= enemigos[e].balas[i].damage;
+					if (escudo <= 0) {
+						escudoactivo = false;
+						desactivarPowerup(2);
+					}
+				}
+				else {
+					//Dañamos al personaje
+					pj.damageTaken += enemigos[e].balas[i].damage;
+				}
 				//Borramos la bala
 				enemigos[e].balas.splice(i, 1);
 				break;
@@ -215,7 +225,7 @@ function movimientoPJ() {
 			break
 	}
 
-	gameContext.drawImage(pj.sprite, pj.posX, pj.posY);
+	gameContext.drawImage(/*pj.sprite*/navePJ, pj.posX, pj.posY);
 }
 
 //Funcion de control del aceleramiento y frenado de la nave
@@ -238,8 +248,14 @@ function movimientoEnemigo() {
 		if (pj.posX > enemigos[e].posX && pj.posX < enemigos[e].posX + enemigos[e].anchura && pj.posY > enemigos[e].posY && pj.posY < enemigos[e].posY + enemigos[e].altura) {
 			//Borramos al enemigo
 			enemigos.splice(e, 1);
-			//Dañamos al personaje
-			pj.damageTaken += 10;
+			if (escudoactivo) {
+				escudoactivo = false;
+				desactivarPowerup(2);
+			}
+			else {
+				//Dañamos al personaje
+				pj.damageTaken += 10;
+			}
 			//Añadimos el audio de muerte de enemigo
 			$("#contieneAudio").append('<audio id="explo" src="audio/boom1.wav" autoplay></audio>');
 			break;
@@ -265,7 +281,7 @@ function spawnPowerup() {
 	//Solo 1 powerup en pantalla a la vez
 	if (nPowerups == 0) {
 		var image = new Image();
-		var rnd = /*randomRangeNumber(0, 2)*/0;
+		var rnd = randomRangeNumber(0, 2);
 		var efecto = 0;
 		switch (rnd) {
 			case 0: image = misilesimg; efecto = 1;
@@ -276,7 +292,7 @@ function spawnPowerup() {
 				break;
 		}
 		nPowerups = 1;
-		powerup.push(new Powerup(image, /*randomRangeNumber(1, 2) * */widthVentana, Math.random() * heightVentana, efecto));
+		powerup.push(new Powerup(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, efecto));
 	}
 }
 
@@ -304,6 +320,7 @@ function movimientoPowerup() {
 		}
 		//Si el powerup se sale de la pantalla, lo borramos directamente
 		if (powerup[p].posX < 20 || powerup[p].posY < 0 || powerup[p].posY + powerup[p].altura > heightVentana) {
+			nPowerups = 0;
 			powerup.splice(p, 1);
 			break;
 		}
@@ -467,6 +484,8 @@ function activarPowerup(efecto) {
 			}
 			break;
 		case 2:
+			escudoactivo = true;
+			navePJ.src = "img/futuramaShip_shieldUp.png"
 			if (primerEscudo) {
 				primerEscudo = false;
 				gamePaused = true;
@@ -474,7 +493,6 @@ function activarPowerup(efecto) {
 					"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/shield_message.png' />"
 				);
 			}
-			//alert("Has recogido un escudo");
 			break;
 		case 3:
 			cadencia = 25;
@@ -485,7 +503,6 @@ function activarPowerup(efecto) {
 					"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/rapidFire_message.png' />"
 				);
 			}
-			//alert("Ahora disparas más rápido");
 			break;
 	}
 }
@@ -501,7 +518,12 @@ function desactivarPowerup(efecto) {
 			);
 			break;
 		case 2:
-			//alert("Se ha terminado el escudo");
+			navePJ.src = "img/futuramaShip_smaller.png";
+			escudo = 20;
+			gamePaused = true;
+			$("#asteroid").append(
+				"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/power_down_message.png' />"
+			);
 			break;
 		case 3:
 			cadencia = 50;
