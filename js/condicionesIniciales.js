@@ -23,6 +23,7 @@ var primerEscudo = true;
 var primerMisil = true;
 var primerDPS = true;
 var mitadVida = false;
+var cadencia = 50;
 
 //Variables fondo de estrellas
 var nEstrellas = 3;
@@ -59,7 +60,7 @@ var naveEnemiga2 = new Image();
 var finalBossAppears = true;
 
 naveEnemiga.addEventListener('load', function () {
-	
+
 	for (var i = 0; i < nEnemigos; i++) {
 		var image = GetRandomEnemySprite();
 		enemigos.push(new Ship(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 5));
@@ -104,17 +105,6 @@ var misilesimg = new Image();
 var escudoimg = new Image();
 var velfuegoimg = new Image();
 
-/*misilesimg.addEventListener('load', function () {
-	misiles.push(new Powerup(misilesimg, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 100));
-}, false);*/
 misilesimg.src = "img/power_ups/changeWeapon.png";
-
-/*escudoimg.addEventListener('load', function () {
-	escudo.push(new Powerup(escudoimg, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 100));
-}, false);*/
 escudoimg.src = "img/power_ups/shield.png";
-
-/*velfuegoimg.addEventListener('load', function () {
-	velfuego.push(new Powerup(velfuegoimg, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, 100));
-}, false);*/
 velfuegoimg.src = "img/power_ups/dps.png";

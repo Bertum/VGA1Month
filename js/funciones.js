@@ -12,8 +12,8 @@ function updateHPBar() {
 	gameContext.clearRect(5, heightVentana / 4, 10, pj.vida * 10);
 	//Lo llenamos de arriba a abajo
 	gameContext.fillStyle = "#00A420";
-	if ((pj.damageTaken / pj.vida) > 0.5){
-		if (!mitadVida){
+	if ((pj.damageTaken / pj.vida) > 0.5) {
+		if (!mitadVida) {
 			mitadVida = true;
 			gamePaused = true;
 			$("#asteroid").append(
@@ -21,7 +21,7 @@ function updateHPBar() {
 			);
 		}
 		gameContext.fillStyle = "#FF0000";
-	} 
+	}
 
 	gameContext.fillRect(5,
 		(heightVentana / 4) + pj.damageTaken * 10,
@@ -34,9 +34,9 @@ function updateHPBar() {
 function gestionTeclas() {
 	$(document).keydown(function (event) {
 		//Al pulsar barra espaciadora el jugador disparara una bala
-		if (event.which == 32) {
+		/*if (event.which == 32) {
 			disparar();
-		}
+		}*/
 		//Al pulsar izquierda el jugador ira a la izquierda
 		if (event.which == 37 || event.which == 65) {
 			pj.movX = "izquierda";
@@ -265,7 +265,7 @@ function spawnPowerup() {
 	//Solo 1 powerup en pantalla a la vez
 	if (nPowerups == 0) {
 		var image = new Image();
-		var rnd = randomRangeNumber(0, 2);
+		var rnd = /*randomRangeNumber(0, 2)*/0;
 		var efecto = 0;
 		switch (rnd) {
 			case 0: image = misilesimg; efecto = 1;
@@ -276,7 +276,7 @@ function spawnPowerup() {
 				break;
 		}
 		nPowerups = 1;
-		powerup.push(new Powerup(image, randomRangeNumber(1, 2) * widthVentana, Math.random() * heightVentana, efecto, 100));
+		powerup.push(new Powerup(image, /*randomRangeNumber(1, 2) * */widthVentana, Math.random() * heightVentana, efecto));
 	}
 }
 
@@ -297,8 +297,8 @@ function movimientoPowerup() {
 			$("#contieneAudio").append('<audio id="explo" src="audio/SFX_Powerup_03.wav" autoplay></audio>');
 			break;
 		}
-		if (activo == 1) { tiempoefecto++; }
-		if (tiempoefecto >= powerup[p].tiempo) {
+		if ((activo == 1) && (powerup[p].efecto == 1) || (powerup[p].efecto == 3)) { tiempoefecto++; }
+		if (tiempoefecto >= 1000) {
 			desactivarPowerup(powerup[p].efecto);
 			tiempoefecto = 0;
 		}
@@ -323,7 +323,7 @@ function enemigoDispara(numEnemigo) {
 
 function gestionJefe() {
 	if (level == 2 && puntuacion >= 20) {
-		if(finalBossAppears){
+		if (finalBossAppears) {
 			finalBossAppears = false;
 			gamePaused = true;
 			$("#asteroid").append(
@@ -437,7 +437,7 @@ function playAndHideMessages() {
 function hitTrophy() {
 	if (pj.posX > trophy.posX && pj.posX < trophy.posX + trophy.width &&
 		pj.posY > trophy.posY && pj.posY < trophy.posY + trophy.height
-		&& level==1) {	
+		&& level == 1) {
 		levelCompleted();
 	}
 }
@@ -448,7 +448,7 @@ function levelCompleted() {
 		//localStorage.setItem("health", pj.vida);
 		//localStorage.setItem("puntuacion", puntuacion);
 		location.reload();
-	} else {		
+	} else {
 		window.location.href = "gameWon.html";
 	}
 }
@@ -458,7 +458,7 @@ function activarPowerup(efecto) {
 		case 1:
 			danioMunicion = 20;
 			imgMunicion = "img/Muzzle_flashes/misil.png"
-			if(primerMisil){
+			if (primerMisil) {
 				primerMisil = false;
 				gamePaused = true;
 				$("#asteroid").append(
@@ -467,7 +467,7 @@ function activarPowerup(efecto) {
 			}
 			break;
 		case 2:
-			if(primerEscudo){
+			if (primerEscudo) {
 				primerEscudo = false;
 				gamePaused = true;
 				$("#asteroid").append(
@@ -477,7 +477,8 @@ function activarPowerup(efecto) {
 			//alert("Has recogido un escudo");
 			break;
 		case 3:
-			if(primerDPS) {
+			cadencia = 25;
+			if (primerDPS) {
 				primerDPS = false;
 				gamePaused = true;
 				$("#asteroid").append(
@@ -494,12 +495,20 @@ function desactivarPowerup(efecto) {
 		case 1:
 			danioMunicion = 5;
 			imgMunicion = "img/Muzzle_flashes/disparo1.png";
+			gamePaused = true;
+			$("#asteroid").append(
+				"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/power_down_message.png' />"
+			);
 			break;
 		case 2:
 			//alert("Se ha terminado el escudo");
 			break;
 		case 3:
-			//alert("La velocidad de disparo ha vuelto a la normal");
+			cadencia = 50;
+			gamePaused = true;
+			$("#asteroid").append(
+				"<img id='asteroidLeela' src='img/pop_ups/Fry_message.png' /><img id='asteroidMessage' src='img/pop_ups/power_down_message.png' />"
+			);
 			break;
 	}
 }

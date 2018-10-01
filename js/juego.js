@@ -2,7 +2,7 @@ $(document).ready(function () {
 	inicio();
 });
 function inicio() {
-	level = localStorage.getItem("level");	
+	level = localStorage.getItem("level");
 	gamePaused = true;
 	if (level == 2) {
 		$("#asteroid").html("");
@@ -29,6 +29,7 @@ function bucle() {
 		if (controlTiempo % 100) {
 			colisionBalas();
 		}
+		if (controlTiempo % cadencia == 0) { disparar(); }
 		if (controlTiempo % 50 == 0) {
 			spawnEnemy();
 			if (level == 2) {
