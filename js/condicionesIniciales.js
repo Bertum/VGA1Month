@@ -45,8 +45,9 @@ var navePJ = new Image();
 var pj = 0;
 navePJ.addEventListener('load', function () {
 	pj = new Ship(navePJ, 100, 100, 20);
-}, false);
+}, {once: true});
 navePJ.src = "img/futuramaShip_smaller.png";
+
 
 trophyImage.addEventListener('load', function () {
 	//Crea el trofeo para acabar el nivel
