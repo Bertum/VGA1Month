@@ -281,7 +281,7 @@ function spawnPowerup() {
 	//Solo 1 powerup en pantalla a la vez
 	if (nPowerups == 0) {
 		var image = new Image();
-		var rnd = randomRangeNumber(0, 2);
+		var rnd = randomRangeNumber(0, 2)0;
 		var efecto = 0;
 		switch (rnd) {
 			case 0: image = misilesimg; efecto = 1;
@@ -314,7 +314,7 @@ function movimientoPowerup() {
 			break;
 		}
 		if ((activo == 1) && (powerup[p].efecto == 1) || (powerup[p].efecto == 3)) { tiempoefecto++; }
-		if (tiempoefecto >= 1000) {
+		if (tiempoefecto >= 500) {
 			desactivarPowerup(powerup[p].efecto);
 			tiempoefecto = 0;
 		}
@@ -508,6 +508,7 @@ function activarPowerup(efecto) {
 }
 
 function desactivarPowerup(efecto) {
+	activo = 0;
 	switch (efecto) {
 		case 1:
 			danioMunicion = 5;
