@@ -271,10 +271,10 @@ function spawnPowerup() {
 
 function movimientoPowerup() {
 	for (var p in powerup) {
-		console.log(powerup[p].powX);
+		console.log(powerup[p].posX);
 		console.log(pj.posX + pj.anchura);
 
-		if (pj.posX + pj.anchura > powerup[p].powX && pj.posX + pj.anchura < powerup[p].powX + powerup[p].anchura && pj.posY > powerup[p].powY && pj.posY < powerup[p].powY + powerup[p].altura) {
+		if (pj.posX + pj.anchura > powerup[p].posX && pj.posX + pj.anchura < powerup[p].posX + powerup[p].anchura && pj.posY > powerup[p].posY && pj.posY < powerup[p].posY + powerup[p].altura) {
 			//Activamos el efecto
 			activo = 1;
 			activarPowerup(powerup[p].efecto);
@@ -292,13 +292,13 @@ function movimientoPowerup() {
 			tiempoefecto = 0;
 		}
 		//Si el powerup se sale de la pantalla, lo borramos directamente
-		if (powerup[p].powX < 20 || powerup[p].powY < 0 || powerup[p].powY + powerup[p].altura > heightVentana) {
+		if (powerup[p].posX < 20 || powerup[p].posY < 0 || powerup[p].posY + powerup[p].altura > heightVentana) {
 			powerup.splice(p, 1);
 			break;
 		}
-		powerup[p].powX--;
-		powerup[p].powY += Math.random() * 4 - 2;
-		gameContext.drawImage(powerup[p].sprite, powerup[p].powX, powerup[p].powY);
+		powerup[p].posX--;
+		powerup[p].posY += Math.random() * 4 - 2;
+		gameContext.drawImage(powerup[p].sprite, powerup[p].posX, powerup[p].posY);
 	}
 }
 
@@ -391,7 +391,7 @@ function clearCanvas() {
 }
 
 function drawTrophy() {
-	if (level == 1) { gameContext.drawImage(trophy.image, trophy.posX, trophy.posY); }
+	if (level == 1) { gameContext.drawImage(trophy.sprite, trophy.posX, trophy.posY); }
 }
 
 function getCookie(cname) {

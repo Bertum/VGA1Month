@@ -1,9 +1,9 @@
+Trophy.prototype = new MainClass();
+
 function Trophy(image, posX, posY) {
-    this.image = image;
-    this.posX = posX;
-    this.posY = posY;
-    this.height = this.image.height;
-    this.width = this.image.width;
+    MainClass.call(this, image, posX, posY);
+    this.height = this.sprite.height;
+    this.width = this.sprite.width;
 
     this.move = function (speed) {
         if ((this.posX - speed) > window.innerWidth / 2) {
